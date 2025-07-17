@@ -1,4 +1,5 @@
 import './bootstrap';
+
 $(document).ready(function () {
     initMouseParallax();
     initAnimateItems();
@@ -143,18 +144,13 @@ function animateSkillTitle() {
     const skillBottom = skillTop + skillHeight;
     const windowCenter = scrollTop + windowHeight / 1.2;
 
-    // Hitung progress animasi berdasarkan posisi window center terhadap section .skill
     let progress = 0;
     if (windowCenter > skillTop) {
         progress = Math.min(1, (windowCenter - skillTop) / skillHeight);
     }
 
-    // Transformasi:
-    // Scale (0.8 → 1.2)
     const scaleValue = 0.2 + progress * 0.8;
-    // Opacity (0 → 1)
     const opacityValue = Math.min(1, progress * 1.5);
-    // TranslateY (-30px → 0px)
     const translateY = -30 * (1 - progress);
 
     $title.css({
@@ -172,7 +168,7 @@ function animateTiktokTitle() {
 
     const windowHeight = $(window).height();
     const scrollTop = $(window).scrollTop();
-    
+
     const sectionTop = $section.offset().top - 500;
     const sectionHeight = $section.outerHeight();
     const windowCenter = scrollTop + windowHeight / 1.2;
@@ -236,7 +232,6 @@ function animateWorkSection() {
     const bgColor = `rgb(${bgValue}, ${bgValue}, ${bgValue})`;
     const textColor = `rgb(${textValue}, ${textValue}, ${textValue})`;
 
-    // Terapkan warna ke .work dan .partner
     $trigger.css('background-color', bgColor);
     $partner.css('background-color', bgColor);
 }
@@ -253,14 +248,12 @@ function animateClosingSection() {
     const relativeY = (scrollMiddle - triggerTop) / triggerHeight;
     const bgProgress = Math.max(0, Math.min(1, (relativeY - 0.3) / (0.5 - 0.4)));
 
-    // Background color transition
     const r = 255;
     const g = Math.round(255 - (255 - 206) * bgProgress);
     const b = Math.round(255 - (255 - 223) * bgProgress);
     const closingColor = `rgb(${r}, ${g}, ${b})`;
     $trigger.css('background-color', closingColor);
 
-    // Title animation
     animateClosingTitle();
 }
 
@@ -277,21 +270,18 @@ function animateClosingTitle() {
     const closingBottom = closingTop + closingHeight;
     const windowCenter = scrollTop + windowHeight / 2;
 
-    // Progress calculation (0 = start, 1 = end)
     let progress = 0;
     if (windowCenter > closingTop) {
         progress = Math.min(1, (windowCenter - closingTop) / closingHeight);
     }
 
-    // Title animation values
     const skewValue = -15 * (1 - progress);
     const scaleTitle = 0.8 + progress * 0.7;
     const opacityTitle = progress * 1.6;
     const translateY = -50 * (1 - progress);
 
-    // Photo animation values
     const scalePhoto = 0.8 + progress * 0.4; // 0.8 → 1.0
-    const opacityPhoto = progress *2; // 0 → 1
+    const opacityPhoto = progress * 2; // 0 → 1
 
     $title.css({
         transform: `skewX(${skewValue}deg) scale(${scaleTitle}) translateY(${translateY}px)`,
@@ -449,145 +439,143 @@ function easeInOutQuad(t) {
 }
 
 $(document).ready(function () {
-	const viewer = document.getElementById('polaroid');
-	let lastScrollTop = 0;
+    const viewer = document.getElementById('polaroid');
+    let lastScrollTop = 0;
 
-	let targetY = 90;
-	let targetX = 80;
-	let currentY = 90;
-	let currentX = 90;
+    let targetY = 90;
+    let targetX = 80;
+    let currentY = 90;
+    let currentX = 90;
 
-	function animate() {
-		currentY += (targetY - currentY) * 0.8;
-		currentX += (targetX - currentX) * 2;
+    function animate() {
+        currentY += (targetY - currentY) * 0.8;
+        currentX += (targetX - currentX) * 2;
 
-		viewer.cameraOrbit = `${currentY.toFixed(2)}deg ${currentX.toFixed(2)}deg 7m`;
+        viewer.cameraOrbit = `${currentY.toFixed(2)}deg ${currentX.toFixed(2)}deg 7m`;
 
-		requestAnimationFrame(animate);
-	}
+        requestAnimationFrame(animate);
+    }
 
-	animate(); // St
+    animate(); // Start animation
 
-	$(window).on('scroll', function () {
-		const st = $(this).scrollTop();
-		const delta = st - lastScrollTop;
-		lastScrollTop = st;
+    $(window).on('scroll', function () {
+        const st = $(this).scrollTop();
+        const delta = st - lastScrollTop;
+        lastScrollTop = st;
 
-		const tipY = Math.max(-10, Math.min(10, delta * 0.2));
-		const tipX = Math.max(-2, Math.min(2, delta * 0.1)); // tetap kecil agar tidak balik ke atas
+        const tipY = Math.max(-10, Math.min(10, delta * 0.2));
+        const tipX = Math.max(-2, Math.min(2, delta * 0.1)); // Keep small to avoid going back up
 
-		targetY += tipY;
-		targetY = Math.max(-25, Math.min(25, targetY));
+        targetY += tipY;
+        targetY = Math.max(-25, Math.min(25, targetY));
 
-		targetX += tipX;
-		targetX = Math.max(-20, Math.min(0, targetX)); // hanya antara -20 (dari bawah) sampai 0 (depan lurus)
-	});
+        targetX += tipX;
+        targetX = Math.max(-20, Math.min(0, targetX)); // Only between -20 (from below) to 0 (straight ahead)
+    });
 });
 
-
 $(document).ready(function () {
-	const $videos = $('.video-item');
-	const $container = $('.videos');
-	let current = 0;
-	let scrollLocked = false;
-	let touchStartY = 0;
+    const $videos = $('.video-item');
+    const $container = $('.videos');
+    let current = 0;
+    let scrollLocked = false;
+    let touchStartY = 0;
 
-	$videos.each(function (i) {
-		$(this).css({
-			position: 'absolute',
-			width: '100%',
-			height: '100%',
-			top: i === 0 ? '0%' : '100%',
-			zIndex: i === 0 ? 1 : 0,
-			objectFit: 'cover'
-		});
-		if (i !== 0) this.pause();
-	});
+    $videos.each(function (i) {
+        $(this).css({
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: i === 0 ? '0%' : '100%',
+            zIndex: i === 0 ? 1 : 0,
+            objectFit: 'cover'
+        });
+        if (i !== 0) this.pause();
+    });
 
-	function showVideo(index, forward = true) {
-		if (scrollLocked || index === current) return;
+    function showVideo(index, forward = true) {
+        if (scrollLocked || index === current) return;
 
-		scrollLocked = true;
+        scrollLocked = true;
 
-		const $current = $videos.eq(current);
-		const $next = $videos.eq(index);
+        const $current = $videos.eq(current);
+        const $next = $videos.eq(index);
 
-		const inDirection = forward ? '100%' : '-100%';
-		const outDirection = forward ? '-100%' : '100%';
+        const inDirection = forward ? '100%' : '-100%';
+        const outDirection = forward ? '-100%' : '100%';
 
-		$next.css({
-			top: inDirection,
-			zIndex: 2
-		}).show();
-		$next[0].play();
+        $next.css({
+            top: inDirection,
+            zIndex: 2
+        }).show();
+        $next[0].play();
 
-		$current.animate({ top: outDirection }, 600, function () {
-			this.pause();
-			this.currentTime = 0;
-			$(this).css({ zIndex: 0 });
-		});
+        $current.animate({ top: outDirection }, 600, function () {
+            this.pause();
+            this.currentTime = 0;
+            $(this).css({ zIndex: 0 });
+        });
 
-		$next.animate({ top: '0%' }, 600, function () {
-			$(this).css({ zIndex: 1 });
-			current = index;
-			setTimeout(() => {
-				scrollLocked = false;
-			}, 0);
-		});
-	}
+        $next.animate({ top: '0%' }, 600, function () {
+            $(this).css({ zIndex: 1 });
+            current = index;
+            setTimeout(() => {
+                scrollLocked = false;
+            }, 0);
+        });
+    }
 
-	function nextVideo() {
-		const next = (current + 1) % $videos.length;
-		showVideo(next, true);
-	}
+    function nextVideo() {
+        const next = (current + 1) % $videos.length;
+        showVideo(next, true);
+    }
 
-	function prevVideo() {
-		const prev = (current - 1 + $videos.length) % $videos.length;
-		showVideo(prev, false);
-	}
+    function prevVideo() {
+        const prev = (current - 1 + $videos.length) % $videos.length;
+        showVideo(prev, false);
+    }
 
-	$container.on('wheel', function (e) {
+    $container.on('wheel', function (e) {
         e.preventDefault();
         if (scrollLocked) return;
-    
+
         const deltaY = e.originalEvent.deltaY;
-    
+
         // Minimal delta agar dianggap scroll valid (contoh: 50)
         if (Math.abs(deltaY) < 50) return;
-    
+
         if (deltaY > 0) {
             nextVideo();
         } else {
             prevVideo();
         }
     });
-	$container.on('touchstart', function (e) {
-		touchStartY = e.originalEvent.touches[0].clientY;
-	});
 
-	$container.on('touchmove', function (e) {
-		e.preventDefault();
-	});
+    $container.on('touchstart', function (e) {
+        touchStartY = e.originalEvent.touches[0].clientY;
+    });
 
-	$container.on('touchend', function (e) {
-		if (scrollLocked) return;
-		const touchEndY = e.originalEvent.changedTouches[0].clientY;
-		const delta = touchStartY - touchEndY;
-		if (delta > 50) {
-			nextVideo();
-		} else if (delta < -50) {
-			prevVideo();
-		}
-	});
+    $container.on('touchmove', function (e) {
+        e.preventDefault();
+    });
+
+    $container.on('touchend', function (e) {
+        if (scrollLocked) return;
+        const touchEndY = e.originalEvent.changedTouches[0].clientY;
+        const delta = touchStartY - touchEndY;
+        if (delta > 50) {
+            nextVideo();
+        } else if (delta < -50) {
+            prevVideo();
+        }
+    });
 });
-
 
 function formatNumber(num) {
     if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
     if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
     return num;
 }
-
 
 function roundToStep(value, step) {
     return Math.round(value / step) * step;
@@ -644,59 +632,59 @@ window.addEventListener('load', handleScrollTrigger);
 window.addEventListener('resize', handleScrollTrigger);
 
 $(document).ready(function () {
-	let startX = 0;
-	let startY = 0;
-	let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
 
-	$('.work__item').on('mousedown touchstart', function (e) {
-		isDragging = true;
-		startX = e.originalEvent.touches ? e.originalEvent.touches[0].clientX : e.clientX;
-		startY = e.originalEvent.touches ? e.originalEvent.touches[0].clientY : e.clientY;
-	});
+    $('.work__item').on('mousedown touchstart', function (e) {
+        isDragging = true;
+        startX = e.originalEvent.touches ? e.originalEvent.touches[0].clientX : e.clientX;
+        startY = e.originalEvent.touches ? e.originalEvent.touches[0].clientY : e.clientY;
+    });
 
-	$('.work__item').on('mousemove touchmove', function (e) {
-		if (!isDragging) return;
+    $('.work__item').on('mousemove touchmove', function (e) {
+        if (!isDragging) return;
 
-		const moveX = e.originalEvent.touches ? e.originalEvent.touches[0].clientX : e.clientX;
-		const moveY = e.originalEvent.touches ? e.originalEvent.touches[0].clientY : e.clientY;
+        const moveX = e.originalEvent.touches ? e.originalEvent.touches[0].clientX : e.clientX;
+        const moveY = e.originalEvent.touches ? e.originalEvent.touches[0].clientY : e.clientY;
 
-		const deltaX = Math.abs(moveX - startX);
-		const deltaY = Math.abs(moveY - startY);
+        const deltaX = Math.abs(moveX - startX);
+        const deltaY = Math.abs(moveY - startY);
 
-		// Hanya prevent scroll jika swipe horizontal lebih dominan
-		if (deltaX > deltaY) {
-			e.preventDefault();
-		}
-	});
+        // Hanya prevent scroll jika swipe horizontal lebih dominan
+        if (deltaX > deltaY) {
+            e.preventDefault();
+        }
+    });
 
-	$('.work__item').on('mouseup touchend', function (e) {
-		if (!isDragging) return;
-		isDragging = false;
+    $('.work__item').on('mouseup touchend', function (e) {
+        if (!isDragging) return;
+        isDragging = false;
 
-		const endX = e.originalEvent.changedTouches ? e.originalEvent.changedTouches[0].clientX : e.clientX;
-		const deltaX = startX - endX;
-		const $info = $(this).find('.item__info');
+        const endX = e.originalEvent.changedTouches ? e.originalEvent.changedTouches[0].clientX : e.clientX;
+        const deltaX = startX - endX;
+        const $info = $(this).find('.item__info');
 
-		if (deltaX > 50) {
-			// Swipe left → show
-			$info.css('transform', 'translateX(0)');
-		} else if (deltaX < -50) {
-			// Swipe right → hide
-			$info.css('transform', 'translateX(100%)');
-		}
-	});
+        if (deltaX > 50) {
+            // Swipe left → show
+            $info.css('transform', 'translateX(0)');
+        } else if (deltaX < -50) {
+            // Swipe right → hide
+            $info.css('transform', 'translateX(100%)');
+        }
+    });
 
-	// Reset
-	$(document).on('mouseup touchend', function () {
-		isDragging = false;
-	});
+    // Reset
+    $(document).on('mouseup touchend', function () {
+        isDragging = false;
+    });
 
-	// Button toggle (desktop only)
-	$('.btn-show').on('click', function () {
+    // Button toggle (desktop only)
+    $('.btn-show').on('click', function () {
         const $item = $(this).closest('.work__item');
         const $info = $item.find('.item__info');
         const isVisible = $info.attr('data-visible') === 'true';
-    
+
         if (isVisible) {
             $info.css('transform', 'translateX(100%)');
             $info.attr('data-visible', 'false');
@@ -704,5 +692,83 @@ $(document).ready(function () {
             $info.css('transform', 'translateX(0)');
             $info.attr('data-visible', 'true');
         }
-    });    
+    });
+});
+
+function slideCoversPerItem() {
+    $('.work__item').each(function () {
+        const container = $(this);
+        const items = container.find('.cover__item');
+        let index = 0;
+
+        if (items.length <= 1) return;
+
+        $(items[0]).css({
+            display: 'block',
+            opacity: 1,
+            zIndex: 2,
+            transform: 'scale(1)',
+            filter: 'blur(0px)'
+        });
+
+        function showNext() {
+            const current = $(items[index]);
+            const nextIndex = (index + 1) % items.length;
+            const next = $(items[nextIndex]);
+
+            // Siapkan next image
+            next.css({
+                display: 'block',
+                opacity: 0,
+                zIndex: 3,
+                transform: 'scale(1.2)',
+                filter: 'blur(8px)'
+            });
+
+            // Fade out current (tanpa efek khusus)
+            current.stop(true).animate({ opacity: 0 }, 600, 'swing', function () {
+                $(this).css({
+                    display: 'none',
+                    zIndex: 1
+                });
+            });
+
+            // Delay masuk + efek cair
+            setTimeout(() => {
+                next
+                    .stop(true)
+                    .animate(
+                        { opacity: 1 },
+                        {
+                            duration: 600,
+                            easing: 'swing',
+                            step: function (now, fx) {
+                                // Gunakan opacity progress (now: 0→1)
+                                const progress = now;
+                                const scale = 1.2 - (0.2 * progress);
+                                const blur = 8 - (8 * progress);
+                                $(this).css({
+                                    transform: `scale(${scale})`,
+                                    filter: `blur(${blur}px)`
+                                });
+                            },
+                            complete: function () {
+                                $(this).css({
+                                    zIndex: 2
+                                });
+                            }
+                        }
+                    );
+            }, 200);
+
+            index = nextIndex;
+            setTimeout(showNext, 3000);
+        }
+
+        setTimeout(showNext, 2000);
+    });
+}
+
+$(document).ready(function () {
+    slideCoversPerItem();
 });

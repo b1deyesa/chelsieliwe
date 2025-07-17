@@ -173,141 +173,37 @@
         <div class="work__container">
             <h2 class="work__title" data-animate="left">My<br>Work</h2>
             <div class="work__list">
+                @foreach ($carriers as $carrier)    
                 <div class="work__item" data-animate="right">
                     <div class="item__cover">
+                        @if ($carrier->job)    
                         <span class="item__info" data-visible="false">
                             <h4>My Work</h4>
                             <ul>
-                                <li>Create concepts for the videocontent</li>
-                                <li>Taking footage (videographer)</li>
-                                <li>Create script for the video content</li>
-                                <li>Editing the content</li>
-                                <li>Be a talent for the video content</li>
-                                <li>Do voice over for the video content</li>
+                                @foreach (json_decode($carrier->job, true) as $job)
+                                    @if (!empty($job))
+                                        <li>{{ $job }}</li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </span>
-                        <img src="{{ asset('assets/img/default.jpg') }}" alt="">
+                        @endif
+                        <div class="cover__list">
+                            <div class="cover__parallax" parallax-top=".2">
+                                @foreach ($carrier->carrierCovers->whereNotNull('path') as $cover)
+                                    <img src="{{ asset('storage/'. $cover->path) }}" alt="" class="cover__item">
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                     <div class="item__description">
-                        <h3 class="item__title">Cellular World</h3>
-                        <button class="btn btn-show">See My work</button>
+                        <h3 class="item__title">{{ $carrier->company }}</h3>
+                        @if ($carrier->job)
+                            <button class="btn btn-show">See My work</button>
+                        @endif
                     </div>
                 </div>
-                <div class="work__item" data-animate="left">
-                    <div class="item__cover">
-                        <span class="item__info" data-visible="false">
-                            <h4>My Work</h4>
-                            <ul>
-                                <li>Create concepts for the video</li>
-                                <li>content</li>
-                                <li>Taking footage (videographer)</li>
-                                <li>Editing the content</li>
-                                <li>Be a talent for the video content</li>
-                            </ul>
-                        </span>
-                        <img src="{{ asset('assets/img/default.jpg') }}" alt="">
-                    </div>
-                    <div class="item__description">
-                        <h3 class="item__title">PT Alam Mimpi</h3>
-                        <button class="btn btn-show">See My work</button>
-                    </div>
-                </div>
-                <div class="work__item" data-animate="right">
-                    <div class="item__cover">
-                        <span class="item__info" data-visible="false">
-                            <h4>My Work</h4>
-                            <ul>
-                                <li>Create concepts for the videocontent</li>
-                                <li>Taking footage (videographer)</li>
-                                <li>Create script for the video content</li>
-                                <li>Editing the content</li>
-                                <li>Be a talent for the video content</li>
-                                <li>Do voice over for the video content</li>
-                            </ul>
-                        </span>
-                        <img src="{{ asset('assets/img/default.jpg') }}" alt="">
-                    </div>
-                    <div class="item__description">
-                        <h3 class="item__title">Best Bali Adventures</h3>
-                        <button class="btn btn-show">See My work</button>
-                    </div>
-                </div>
-                <div class="work__item" data-animate="left">
-                    <div class="item__cover">
-                        <span class="item__info" data-visible="false">
-                            <h4>My Work</h4>
-                            <ul>
-                                <li>Poster Design</li>
-                            </ul>
-                        </span>
-                        <img src="{{ asset('assets/img/default.jpg') }}" alt="">
-                    </div>
-                    <div class="item__description">
-                        <h3 class="item__title">Tazawa Ramen</h3>
-                        <button class="btn btn-show">See My work</button>
-                    </div>
-                </div>
-                <div class="work__item" data-animate="right">
-                    <div class="item__cover">
-                        <span class="item__info" data-visible="false">
-                            <h4>My Work</h4>
-                            <ul>
-                                <li>Design Instagram Feeds</li>
-                                <li>Design Instagram Story</li>
-                            </ul>
-                        </span>
-                        <img src="{{ asset('assets/img/default.jpg') }}" alt="">
-                    </div>
-                    <div class="item__description">
-                        <h3 class="item__title">Tigris Official</h3>
-                        <button class="btn btn-show">See My work</button>
-                    </div>
-                </div>
-                <div class="work__item" data-animate="left">
-                    <div class="item__cover">
-                        <span class="item__info" data-visible="false">
-                            <h4>My Work</h4>
-                            <ul>
-                                <li>Design Instagram Feeds</li>
-                            </ul>
-                        </span>
-                        <img src="{{ asset('assets/img/default.jpg') }}" alt="">
-                    </div>
-                    <div class="item__description">
-                        <h3 class="item__title">Sellany Kicks</h3>
-                        <button class="btn btn-show">See My work</button>
-                    </div>
-                </div>
-                <div class="work__item" data-animate="right">
-                    <div class="item__cover">
-                        <span class="item__info" data-visible="false">
-                            <h4>My Work</h4>
-                            <ul>
-                                <li>Instagram Feeds - Kreatif Imaji Nusantara</li>
-                            </ul>
-                        </span>
-                        <img src="{{ asset('assets/img/cinnamoyol.jpg') }}" alt="">
-                    </div>
-                    <div class="item__description">
-                        <h3 class="item__title">Kreatif Imaji Nusantara (KIN)</h3>
-                        <button class="btn btn-show">See My work</button>
-                    </div>
-                </div>
-                <div class="work__item" data-animate="left">
-                    <div class="item__cover">
-                        <span class="item__info" data-visible="false">
-                            <h4>My Work</h4>
-                            <ul>
-                                <li>Own Business</li>
-                            </ul>
-                        </span>
-                        <img src="{{ asset('assets/img/default.jpg') }}" alt="">
-                    </div>
-                    <div class="item__description">
-                        <h3 class="item__title">Own Banner Design</h3>
-                        <button class="btn btn-show">See My work</button>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
