@@ -51,9 +51,9 @@
                 <div class="about__right__buttons">
                     <a class="btn" href=""><i class="fa-solid fa-file-arrow-down"></i>Curriculum Vitae</a>
                     <div class="buttons__sosmed">
-                        <a class="btn btn-outline" href=""><i class="fa-brands fa-instagram"></i></a>
-                        <a class="btn btn-outline" href=""><i class="fa-brands fa-tiktok"></i></a>
-                        <a class="btn btn-outline" href=""><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline" href="https://www.instagram.com/chelsieliwe/"><i class="fa-brands fa-instagram"></i></a>
+                        <a class="btn btn-outline" href="https://www.tiktok.com/@itsmichxi"><i class="fa-brands fa-tiktok"></i></a>
+                        <a class="btn btn-outline" href="https://id.linkedin.com/in/chelsie-liwe-2a3939292"><i class="fa-brands fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
